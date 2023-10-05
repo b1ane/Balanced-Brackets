@@ -44,7 +44,13 @@ class stack {
         return top == nullptr;
     }
 
-
+    void print() {
+        node* current = top;
+        while( current != nullptr) {
+            cout << current->data << endl;
+            current = current -> next;
+        }
+    }
 
 
 
@@ -70,6 +76,17 @@ int main(int argc, char** argv) {
     }
     file.close();
 
+    stack stack1;
 
+    //separate string by characters
+    for( int i = 0; i < inputString.size(); i++) {
+        //insert characters into stack
+        stack1.push(inputString[i]);
+    }
+
+    cout << "Outputting stack:" << endl;
+    stack1.print();
+
+    
 
 }
