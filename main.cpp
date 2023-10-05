@@ -52,10 +52,15 @@ class stack {
         }
     }
 
-
-
-
 };
+
+bool openBracket(char value) {
+    return( value == '(' || value == '{' || value == '[' );
+}
+
+bool closeBracket(char value) {
+    return( value == ')' || value == '}' || value == ']' );
+}
 
 int main(int argc, char** argv) {
     if(argc!=2) {
@@ -71,22 +76,48 @@ int main(int argc, char** argv) {
     file.open(inputFile);
     if(file.is_open()) {
         while(getline(file, inputString)) {
-            cout << inputString << endl;
+            //cout << inputString << endl;
         }
     }
     file.close();
 
     stack stack1;
 
-    //separate string by characters
+    bool isBalanced;
+
+    //separate string by characters, push bracket into stack
     for( int i = 0; i < inputString.size(); i++) {
-        //insert characters into stack
-        stack1.push(inputString[i]);
+        char value = inputString[i];
+        if(openBracket(value)) {
+            stack1.push( value);
+        } 
+        //if closing bracket, check if it's a match with the top value
+        if(closeBracket(value)) {
+            //stores top value in topBracket
+            char topBracket = stack1.peek();
+            //deletes that value 
+            //if value and top bracket do not match, string is not balanced
+            if(value == ')' && topBracket != '(' || value == ']' && topBracket != '[' || value == '}' && topBracket != '{' ) {
+                isBalanced = false;
+            }
+            else {
+                stack1.pop();
+            }
+        }
     }
 
-    cout << "Outputting stack:" << endl;
-    stack1.print();
+    if(stack1.isEmpty()) {
+        isBalanced = true;
+    }
 
-    
+    ofstream outputfile("output.txt");
+
+
+    if(isBalanced) {
+        outputfile << "True" << endl;
+    }
+    else {
+        outputfile << "False" << endl;
+    }
 
 }
